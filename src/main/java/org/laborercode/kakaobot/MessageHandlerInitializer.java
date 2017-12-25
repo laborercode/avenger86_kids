@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebListener;
 import org.laborercode.kakaobot.message.AccountMessageHandler;
 import org.laborercode.kakaobot.message.DuesMessageHandler;
 import org.laborercode.kakaobot.message.MessageHandler;
+import org.laborercode.kakaobot.message.ScheduleMessageHandler;
 
 @WebListener
 public class MessageHandlerInitializer implements ServletContextListener {
