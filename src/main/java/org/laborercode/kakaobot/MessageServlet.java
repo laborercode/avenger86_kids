@@ -3,6 +3,7 @@ package org.laborercode.kakaobot;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,10 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.laborercode.kakaobot.message.MessageHandler;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SuppressWarnings("serial")
-@WebServlet("/message")
+@WebServlet(value={"/message"}, asyncSupported=true)
 public class MessageServlet extends HttpServlet {
 
     @Override
@@ -44,11 +47,40 @@ public class MessageServlet extends HttpServlet {
             } else {
                 for(MessageHandler handler : messageHandlerList) {
                     if(handler.getMessage().equals(content)) {
-                        MessageResponse mr = handler.handle(post);
-                        mapper.writeValue(resp.getOutputStream(), mr);
+                        AsyncContext asyncContext = req.startAsync();
+                        asyncContext.start(new HandlerRunner(asyncContext, mapper,
+                                handler, post));
                         break;
                     }
                 }
+            }
+        }
+    }
+
+    public static class HandlerRunner implements Runnable {
+        private AsyncContext asyncContext;
+        private ObjectMapper mapper;
+        private MessageHandler handler;
+        private MessageRequest messageRequest;
+
+        public HandlerRunner(AsyncContext asyncContext, ObjectMapper mapper,
+                MessageHandler handler,
+                MessageRequest post) {
+            this.asyncContext = asyncContext;
+            this.mapper = mapper;
+            this.handler = handler;
+            this.messageRequest = post;
+        }
+
+        public void run() {
+            MessageResponse mr = handler.handle(messageRequest);
+            try {
+                mapper.writeValue(asyncContext.getResponse().getOutputStream(), mr);
+            } catch (JsonGenerationException e) {
+            } catch (JsonMappingException e) {
+            } catch (IOException e) {
+            } finally {
+                asyncContext.complete();
             }
         }
     }

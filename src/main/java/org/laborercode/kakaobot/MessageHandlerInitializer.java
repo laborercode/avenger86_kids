@@ -8,7 +8,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import org.laborercode.kakaobot.message.AccountMessageHandler;
-import org.laborercode.kakaobot.message.DuesMessageHandler;
+import org.laborercode.kakaobot.message.BalanceMessageHandler;
 import org.laborercode.kakaobot.message.MessageHandler;
 import org.laborercode.kakaobot.message.ScheduleMessageHandler;
 
@@ -18,7 +18,7 @@ public class MessageHandlerInitializer implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         List<MessageHandler> messageHandlerList = new ArrayList<MessageHandler>();
 
-        messageHandlerList.add(new DuesMessageHandler());
+        messageHandlerList.add(new BalanceMessageHandler());
         messageHandlerList.add(new AccountMessageHandler());
         messageHandlerList.add(new ScheduleMessageHandler());
 
