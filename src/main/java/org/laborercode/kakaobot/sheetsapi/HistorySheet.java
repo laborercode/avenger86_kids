@@ -13,7 +13,7 @@ import okhttp3.Response;
 public class HistorySheet {
     private static final String url = "https://sheets.googleapis.com/v4/spreadsheets";
     private static final String spreadsheetId = "1OEzu4Yka025McPjHP0t_TZxfgxZch4ukwtk568jbZV4";
-    private static final String range = "'2018 내역'!D2";
+    private static final String range = "'2019 내역'!D2";
     private static final String key = "AIzaSyA_Xd9S5EC0ioX2p5j1cMKgGfde2q0yvr0";
 
     public static String getBalance() throws JsonParseException, JsonMappingException, IOException {
