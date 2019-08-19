@@ -1,0 +1,25 @@
+package org.laborercode.kakaobot.message;
+
+import org.laborercode.kakaobot.Message;
+import org.laborercode.kakaobot.MessageRequest;
+import org.laborercode.kakaobot.MessageResponse;
+
+public class AccountMessageHandler implements MessageHandler {
+
+    public String getMessage() {
+        return "회비링크";
+    }
+
+    public String getHelp() {
+        return "회비 내역의 링크를 보여줍니다.";
+    }
+
+    public MessageResponse handle(MessageRequest request) {
+        Message message = new Message();
+        message.setText("https://docs.google.com/spreadsheets/d/1OEzu4Yka025McPjHP0t_TZxfgxZch4ukwtk568jbZV4/edit#gid=1951335586");
+        MessageResponse mr = new MessageResponse();
+        mr.setMessage(message);
+        return mr;
+    }
+
+}
